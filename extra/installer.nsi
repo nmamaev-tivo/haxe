@@ -145,6 +145,9 @@ Section "Neko ${NEKO_VERSION}" Neko
 
 	File /r /x .svn /x *.db /x Exceptions.log /x .local /x .multi /x *.pdb /x *.vshost.exe /x *.vshost.exe.config /x *.vshost.exe.manifest "resources\neko\*.*"
 
+	ExecWait '"$INSTDIR\haxe\haxe.exe" --cwd "$INSTDIR\haxe" -x WinSetup.hx'
+	SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
+
 SectionEnd
 
 
