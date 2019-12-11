@@ -74,8 +74,6 @@ XPStyle on
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "images\Wizard.bmp"
 !define MUI_PAGE_HEADER_SUBTEXT "Please view the license before installing Haxe ${VERLONG}."
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of $(^NameDA).\r\n\r\nIt is recommended that you close all other applications before starting Setup. This will make it possible to update relevant system files without having to reboot your computer.\r\n\r\n$_CLICK"
-!define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_FUNCTION "WinSetup"
 
 ;--------------------------------
 
@@ -113,11 +111,6 @@ Function .onInit
 
 FunctionEnd
 
-Function WinSetup
-	ExecWait '"$INSTDIR\haxe\haxe.exe" --cwd "$INSTDIR\haxe" -x WinSetup.hx'
-	SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
-FunctionEnd
-
 ;--------------------------------
 
 ; Install Sections
@@ -136,6 +129,8 @@ Section "Haxe ${VERSION}" Main
 	File /r /x .svn /x *.db /x Exceptions.log /x .local /x .multi /x *.pdb /x *.vshost.exe /x *.vshost.exe.config /x *.vshost.exe.manifest "resources\haxe\*.*"
 
 	${registerExtension} "$INSTDIR\haxe\haxe.exe --prompt" ".hxml" "Haxe compiler arguments list"
+	ExecWait '"$INSTDIR\haxe\haxe.exe" --cwd "$INSTDIR\haxe" -x WinSetup.hx'
+	SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
 
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
@@ -149,6 +144,9 @@ Section "Neko ${NEKO_VERSION}" Neko
 	SetOutPath "$INSTDIR\neko"
 
 	File /r /x .svn /x *.db /x Exceptions.log /x .local /x .multi /x *.pdb /x *.vshost.exe /x *.vshost.exe.config /x *.vshost.exe.manifest "resources\neko\*.*"
+
+	ExecWait '"$INSTDIR\haxe\haxe.exe" --cwd "$INSTDIR\haxe" -x WinSetup.hx'
+	SendMessage ${HWND_BROADCAST} ${WM_SETTINGCHANGE} 0 "STR:Environment" /TIMEOUT=5000
 
 SectionEnd
 
